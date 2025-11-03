@@ -1,6 +1,8 @@
 # Strivio
 <details>
-<summary> ## Tugas Individu 7 </summary>
+<summary><b>Tugas Individu 7</b> (klik untuk membuka)</summary>
+<br>
+
 ### Jelaskan apa itu widget tree pada Flutter dan bagaimana hubungan parent-child (induk-anak) bekerja antar widget.
 Widget tree adalah struktur hierarkis yang merepresentasikan susunan seluruh widget di layar Flutter. Setiap elemen UI mulai dari aplikasi, halaman, hingga tombol dan teks, adalah widget yang saling bertumpuk dalam hubungan parent-child.
 - Parent bertanggung jawab menempatkan, memberi batas, dan me-layout child-nya (mis. Column mengatur posisi vertikal anak-anaknya).
