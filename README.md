@@ -1,6 +1,6 @@
 # Strivio
 <details>
-<summary><b>Tugas Individu 7</b> (klik untuk membuka)</summary>
+<summary><b>Tugas Individu 7</b></summary>
 <br>
 
 ### Jelaskan apa itu widget tree pada Flutter dan bagaimana hubungan parent-child (induk-anak) bekerja antar widget.
