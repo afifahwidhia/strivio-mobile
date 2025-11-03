@@ -1,5 +1,6 @@
 # Strivio
-## Tugas Individu 7
+<details>
+<summary> ## Tugas Individu 7 </summary>
 ### Jelaskan apa itu widget tree pada Flutter dan bagaimana hubungan parent-child (induk-anak) bekerja antar widget.
 Widget tree adalah struktur hierarkis yang merepresentasikan susunan seluruh widget di layar Flutter. Setiap elemen UI mulai dari aplikasi, halaman, hingga tombol dan teks, adalah widget yang saling bertumpuk dalam hubungan parent-child.
 - Parent bertanggung jawab menempatkan, memberi batas, dan me-layout child-nya (mis. Column mengatur posisi vertikal anak-anaknya).
@@ -59,3 +60,4 @@ Pada metode build, BuildContext digunakan untuk mengambil nilai yang bergantung 
 Flutter menyediakan fitur **hot reload** untuk mempercepat proses pengembangan. Dengan hot reload, perubahan kode disuntikkan langsung ke Dart Virtual Machine, lalu widget tree dibangun ulang tanpa menghapus state yang sedang berjalan. Artinya, jika sebuah halaman sudah berada pada kondisi tertentu (misalnya input sudah terisi atau navigasi sudah berada di halaman ke-3), kondisi tersebut tetap dipertahankan setelah hot reload. Fitur ini sangat berguna untuk mencoba perubahan tampilan UI atau logika ringan secara cepat.
 
 Sedangkan, **hot restart** akan menjalankan ulang aplikasi dari awal, sama seperti ketika aplikasi pertama kali dibuka. Semua state yang tersimpan di memori di-reset, termasuk variabel dalam StatefulWidget, posisi halaman, bahkan nilai counter sederhana sekalipun. Hot restart lebih lambat dibanding hot reload, namun diperlukan ketika perubahan kode bersifat struktural, seperti mengubah inisialisasi variabel state atau menambah field baru dalam sebuah class state.
+</details>
