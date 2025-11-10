@@ -63,3 +63,58 @@ Flutter menyediakan fitur **hot reload** untuk mempercepat proses pengembangan. 
 
 Sedangkan, **hot restart** akan menjalankan ulang aplikasi dari awal, sama seperti ketika aplikasi pertama kali dibuka. Semua state yang tersimpan di memori di-reset, termasuk variabel dalam StatefulWidget, posisi halaman, bahkan nilai counter sederhana sekalipun. Hot restart lebih lambat dibanding hot reload, namun diperlukan ketika perubahan kode bersifat struktural, seperti mengubah inisialisasi variabel state atau menambah field baru dalam sebuah class state.
 </details>
+
+<details>
+<summary><b>Tugas Individu 8</b></summary>
+<br>
+
+### Jelaskan perbedaan antara `Navigator.push()` dan `Navigator.pushReplacement()` pada Flutter. Dalam kasus apa sebaiknya masing-masing digunakan pada aplikasi Football Shop kamu?
+`Navigator.push()` dan `Navigator.pushReplacement()` sama-sama digunakan untuk berpindah halaman di Flutter, namun perbedaan utamanya ada pada cara keduanya mengelola stack halaman.
+
+`Navigator.push()` **menambahkan halaman baru di atas halaman yang sedang dibuka**, sehingga pengguna masih dapat kembali ke halaman sebelumnya menggunakan tombol back. Misalnya pada aplikasi Strivio, saat pengguna berada di halaman utama (MyHomePage) lalu menekan tombol **"Create Product"**, kita menggunakan `Navigator.push()` agar setelah menyimpan data, pengguna bisa menekan tombol back untuk kembali ke halaman utama tanpa kehilangan konteks.
+
+Sementara itu, `Navigator.pushReplacement()` **mengganti halaman yang sedang aktif dengan halaman baru**, sehingga halaman sebelumnya dihapus dari stack. Pendekatan ini cocok ketika halaman lama tidak perlu diakses kembali, misalnya setelah login berhasil, halaman login digantikan oleh halaman dashboard agar pengguna tidak bisa kembali ke layar login dengan tombol back.
+
+Jadi, dalam konteks Strivio, `Navigator.push()` digunakan untuk navigasi antar fitur (seperti membuka form produk), sedangkan `Navigator.pushReplacement()` cocok untuk transisi yang sifatnya final seperti logout atau berpindah antar halaman utama.
+
+### Bagaimana kamu memanfaatkan hierarchy widget seperti Scaffold, AppBar, dan Drawer untuk membangun struktur halaman yang konsisten di seluruh aplikasi?
+Dalam aplikasi Flutter, **Scaffold** berperan sebagai fondasi setiap halaman. Ia menyediakan struktur dasar seperti **AppBar**, **Body**, dan **Drawer**, sehingga setiap halaman memiliki tampilan yang konsisten tanpa harus menulis ulang struktur layout berulang kali.
+
+Pada aplikasi Strivio, setiap halaman—baik halaman utama maupun halaman form tambah produk—dibangun menggunakan Scaffold.  
+- **AppBar** digunakan untuk menampilkan judul aplikasi “Strivio” dengan warna tema utama (pink). Hal ini membantu pengguna selalu tahu di aplikasi mana mereka berada.  
+- **Body** berisi konten utama seperti grid tombol pada MyHomePage dan form input pada ProductFormPage.  
+- **Drawer** berfungsi sebagai menu navigasi samping yang menyediakan akses cepat ke halaman “Home” dan “Create Product”.  
+
+Dengan memanfaatkan hierarchy ini, aplikasi terlihat lebih terorganisir, setiap halaman memiliki tampilan yang seragam, dan navigasi antar fitur menjadi lebih mudah serta konsisten di seluruh aplikasi.
+
+### Dalam konteks desain antarmuka, apa kelebihan menggunakan layout widget seperti Padding, SingleChildScrollView, dan ListView saat menampilkan elemen-elemen form? Berikan contoh penggunaannya dari aplikasi kamu.
+Layout widget seperti **Padding**, **SingleChildScrollView**, dan **ListView** digunakan untuk meningkatkan kenyamanan visual dan fungsionalitas form agar tetap responsif pada berbagai ukuran layar.
+
+- **Padding** digunakan untuk memberi jarak antar elemen, sehingga input field tidak terlalu rapat dan lebih mudah dibaca.  
+  Contohnya pada `ProductFormPage`, setiap `TextFormField` dibungkus oleh `Padding(const EdgeInsets.all(8.0))` untuk menjaga jarak antar field.  
+
+- **SingleChildScrollView** membuat halaman dapat di-scroll saat konten form melebihi tinggi layar. Ini penting terutama saat form memiliki banyak input (misalnya nama, harga, deskripsi, kategori, thumbnail, dan toggle unggulan), sehingga pengguna tidak perlu khawatir field bagian bawah tertutup keyboard.  
+
+- **ListView** (meski belum digunakan secara eksplisit di form) bisa menjadi alternatif jika input field-nya dinamis atau sangat banyak karena `ListView` hanya merender elemen yang terlihat di layar (lebih efisien).
+
+Dengan kombinasi widget tersebut, form Strivio tetap nyaman digunakan di berbagai device, tidak terpotong, dan terlihat proporsional tanpa elemen yang berhimpitan.
+
+### Bagaimana kamu menyesuaikan warna tema agar aplikasi Football Shop memiliki identitas visual yang konsisten dengan brand toko?
+Untuk menjaga identitas visual yang konsisten, Strivio menggunakan skema warna pinkish yang berbeda dari nuansa biru pada Football News sebelumnya. Penyesuaian ini dilakukan melalui properti **ThemeData** pada `MaterialApp`.
+
+Contohnya:
+```dart
+theme: ThemeData(
+  colorScheme: ColorScheme.fromSwatch(
+    primarySwatch: Colors.pink,
+  ).copyWith(
+    secondary: Colors.pinkAccent[100],
+  ),
+),```
+
+primarySwatch menentukan warna utama aplikasi yang digunakan pada AppBar, FloatingActionButton, dan elemen penting lainnya. secondary digunakan untuk elemen pendukung seperti warna latar belakang tombol atau efek klik pada kartu produk.
+
+Dengan cara ini, semua halaman dalam aplikasi (termasuk MyHomePage, Drawer, dan ProductFormPage) secara otomatis mengikuti skema warna yang sama.
+Hasilnya, aplikasi Strivio tampil dengan gaya yang kohesif dan profesional, memperkuat brand identity Football Shop sebagai platform yang modern, ceria, dan mudah diingat.
+
+</details>
