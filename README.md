@@ -110,14 +110,15 @@ theme: ThemeData(
   ).copyWith(
     secondary: Colors.pinkAccent[100],
   ),
-),```
+),
+```
 
 primarySwatch menentukan warna utama aplikasi yang digunakan pada AppBar, FloatingActionButton, dan elemen penting lainnya. secondary digunakan untuk elemen pendukung seperti warna latar belakang tombol atau efek klik pada kartu produk.
 
 Dengan cara ini, semua halaman dalam aplikasi (termasuk MyHomePage, Drawer, dan ProductFormPage) secara otomatis mengikuti skema warna yang sama.
 Hasilnya, aplikasi Strivio tampil dengan gaya yang kohesif dan profesional, memperkuat brand identity Football Shop sebagai platform yang modern, ceria, dan mudah diingat.
-
 </details>
+
 
 <details>
 <summary><b>Tugas Individu 9</b></summary>
