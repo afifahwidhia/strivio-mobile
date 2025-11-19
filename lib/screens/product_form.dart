@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:strivio/widgets/left_drawer.dart';
+import 'dart:convert';
+import 'package:provider/provider.dart';
+import 'package:pbp_django_auth/pbp_django_auth.dart';
+import 'package:strivio/screens/menu.dart';
 
 class ProductFormPage extends StatefulWidget {
   const ProductFormPage({super.key});
@@ -13,19 +17,21 @@ class _ProductFormPageState extends State<ProductFormPage> {
   String _name = "";
   double _price = 0;
   String _description = "";
-  String _category = "Jersey";
+  String _category = "Gear";
   String _thumbnail = "";
-  bool _isFeatured = false;
+  double _rating = 5; 
+  int _stock = 1;
 
   final List<String> _categories = [
-    'Jersey',
-    'Sepatu',
-    'Aksesoris',
-    'Peralatan Latihan',
+    'Gear',
+    'Clothing',
+    'Shoes',
+    'Accessory',
   ];
 
   @override
   Widget build(BuildContext context) {
+    final request = context.watch<CookieRequest>();
     return Scaffold(
       appBar: AppBar(
         title: const Center(child: Text('Tambah Produk Baru')),
@@ -127,13 +133,45 @@ class _ProductFormPageState extends State<ProductFormPage> {
                 ),
               ),
 
-              // === Featured ===
+              // === Rating ===
               Padding(
                 padding: const EdgeInsets.all(8.0),
-                child: SwitchListTile(
-                  title: const Text("Tandai sebagai Produk Unggulan"),
-                  value: _isFeatured,
-                  onChanged: (v) => setState(() => _isFeatured = v),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Text("Rating Produk"),
+                    Slider(
+                      value: _rating,
+                      min: 1,
+                      max: 5,
+                      divisions: 4,
+                      label: _rating.toString(),
+                      onChanged: (value) => setState(() => _rating = value),
+                    ),
+                  ],
+                ),
+              ),
+
+              // === Stock ===
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: TextFormField(
+                  decoration: InputDecoration(
+                    labelText: "Stok",
+                    border: OutlineInputBorder(borderRadius: BorderRadius.circular(5)),
+                  ),
+                  keyboardType: TextInputType.number,
+                  onChanged: (value) {
+                    setState(() => _stock = int.tryParse(value) ?? 0);
+                  },
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return "Stok tidak boleh kosong!";
+                    } else if (int.tryParse(value) == null || int.parse(value) <= 0) {
+                      return "Stok harus lebih dari 0!";
+                    }
+                    return null;
+                  },
                 ),
               ),
 
@@ -147,34 +185,41 @@ class _ProductFormPageState extends State<ProductFormPage> {
                       backgroundColor:
                           MaterialStateProperty.all(Colors.indigo),
                     ),
-                    onPressed: () {
-                      if (_formKey.currentState!.validate()) {
-                        showDialog(
-                          context: context,
-                          builder: (context) => AlertDialog(
-                            title: const Text('Produk berhasil disimpan!'),
-                            content: Column(
-                              mainAxisSize: MainAxisSize.min,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text('Nama: $_name'),
-                                Text('Harga: Rp$_price'),
-                                Text('Deskripsi: $_description'),
-                                Text('Kategori: $_category'),
-                                Text('Unggulan: ${_isFeatured ? "Ya" : "Tidak"}'),
-                              ],
+                    onPressed: () async {
+                    if (_formKey.currentState!.validate()) {
+                      final response = await request.postJson(
+                        "http://localhost:8000/create-flutter/",
+                        jsonEncode({
+                          "name": _name,
+                          "price": _price,
+                          "description": _description,
+                          "thumbnail": _thumbnail,
+                          "category": _category,
+                          "rating": _rating,       
+                          "stock": _stock,       
+                        }),
+                      );
+
+                      if (context.mounted) {
+                        if (response['status'] == 'success') {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(content: Text("Product successfully saved!")),
+                          );
+
+                          Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(builder: (context) => MyHomePage()),
+                          );
+                        } else {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                              content: Text("Something went wrong, please try again."),
                             ),
-                            actions: [
-                              TextButton(
-                                child: const Text('OK'),
-                                onPressed: () => Navigator.pop(context),
-                              ),
-                            ],
-                          ),
-                        );
-                        _formKey.currentState!.reset();
+                          );
+                        }
                       }
-                    },
+                    }
+                  },
                     child: const Text("Simpan", style: TextStyle(color: Colors.white)),
                   ),
                 ),

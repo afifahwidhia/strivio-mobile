@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:strivio/screens/menu.dart';
 import 'package:strivio/screens/product_form.dart';
+import 'package:strivio/screens/product_entry_list.dart';
 
 class LeftDrawer extends StatelessWidget {
   const LeftDrawer({super.key});
@@ -46,6 +47,16 @@ class LeftDrawer extends StatelessWidget {
               Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(builder: (context) => const ProductFormPage()),
+              );
+            },
+          ),
+          ListTile(
+            leading: const Icon(Icons.list_alt),
+            title: const Text('All Products'),
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const ProductEntryListPage()),
               );
             },
           ),

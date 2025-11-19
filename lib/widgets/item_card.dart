@@ -1,26 +1,26 @@
 import 'package:flutter/material.dart';
-import 'package:strivio/screens/product_form.dart'; 
+import 'package:strivio/screens/product_form.dart';
 import 'package:strivio/screens/menu.dart';
+import 'package:strivio/screens/product_entry_list.dart';
+import 'package:strivio/screens/login.dart';
+import 'package:pbp_django_auth/pbp_django_auth.dart';
+import 'package:provider/provider.dart';
+import 'package:strivio/screens/my_product_list.dart';
 
 class ItemCard extends StatelessWidget {
-  // Menampilkan kartu dengan ikon dan nama.
-
   final ItemHomepage item;
 
   const ItemCard(this.item, {super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Material(
-      // Menentukan warna latar belakang dari tema aplikasi.
-      color: item.color,
-      // Membuat sudut kartu melengkung.
-      borderRadius: BorderRadius.circular(12),
+    final request = context.watch<CookieRequest>();
 
+    return Material(
+      color: item.color,
+      borderRadius: BorderRadius.circular(12),
       child: InkWell(
-        // Aksi ketika kartu ditekan.
-        onTap: () {
-          // Menampilkan pesan SnackBar saat kartu ditekan.
+        onTap: () async {
           ScaffoldMessenger.of(context)
             ..hideCurrentSnackBar()
             ..showSnackBar(
@@ -29,28 +29,61 @@ class ItemCard extends StatelessWidget {
               ),
             );
 
-          // Tambahkan navigasi berdasarkan nama tombol
+          // === Navigation Logic ===
           if (item.name == "Create Products") {
             Navigator.push(
               context,
               MaterialPageRoute(builder: (context) => const ProductFormPage()),
             );
           }
+
+          else if (item.name == "All Products") {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => const ProductEntryListPage()),
+            );
+          }
+
+          else if (item.name == "My Products") {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => const MyProductListPage()),
+            );
+          }
+
+          else if (item.name == "Logout") {
+            final response =
+                await request.logout("http://localhost:8000/auth/logout/");
+
+            String message = response["message"];
+
+            if (context.mounted) {
+              if (response['status']) {
+                String uname = response["username"];
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(content: Text("$message See you again, $uname.")),
+                );
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(builder: (context) => const LoginPage()),
+                );
+              } else {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(content: Text(message)),
+                );
+              }
+            }
+          }
         },
-        // Container untuk menyimpan Icon dan Text
+
         child: Container(
           padding: const EdgeInsets.all(8),
           child: Center(
             child: Column(
-              // Menyusun ikon dan teks di tengah kartu.
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Icon(
-                  item.icon,
-                  color: Colors.white,
-                  size: 30.0,
-                ),
-                const Padding(padding: EdgeInsets.all(3)),
+                Icon(item.icon, color: Colors.white, size: 30.0),
+                const SizedBox(height: 3),
                 Text(
                   item.name,
                   textAlign: TextAlign.center,

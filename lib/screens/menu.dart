@@ -12,9 +12,10 @@ class MyHomePage extends StatelessWidget {
 
   // List tombol (items)
   final List<ItemHomepage> items = [
-    ItemHomepage("All Products", Icons.newspaper, Colors.blue.shade200),
-    ItemHomepage("My Products", Icons.add, Colors.lightGreen.shade400),
-    ItemHomepage("Create Products", Icons.logout, Colors.red.shade700),
+    ItemHomepage("All Products", Icons.shopping_bag, Colors.blue.shade300),
+    ItemHomepage("My Products", Icons.inventory, Colors.green.shade400),
+    ItemHomepage("Create Products", Icons.add, Colors.orange.shade700),
+    ItemHomepage("Logout", Icons.logout, Colors.red.shade700),
   ];
 
   @override
@@ -81,7 +82,7 @@ class MyHomePage extends StatelessWidget {
                     padding: const EdgeInsets.all(20),
                     crossAxisSpacing: 10,
                     mainAxisSpacing: 10,
-                    crossAxisCount: 3,
+                    crossAxisCount: 4,
                     // Agar grid menyesuaikan tinggi kontennya.
                     shrinkWrap: true,
 
